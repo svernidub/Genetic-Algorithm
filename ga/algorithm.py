@@ -1,6 +1,7 @@
 from initialize_population import InitializePopulation
 from calculate_function_value import CalculateFunctionValue
 from reproduction_selection import ReproductionSelection
+from crossingover import Crossingover
 
 class Algorithm:
     def __init__(self, fitness_function, x_min, x_max, population_size, mutation_probability):
@@ -15,6 +16,7 @@ class Algorithm:
         self.__initialize_population()
         self.__calculate_function_value()
         self.__reproduction_selection()
+        self.__crossing_over()
 
 
     def __initialize_population(self):
@@ -30,6 +32,11 @@ class Algorithm:
     def __reproduction_selection(self):
         reproductor = ReproductionSelection(self.__population)
         self.__parents = reproductor.perform()
+
+
+    def __crossing_over(self):
+        crosser = Crossingover(self.__parents)
+        self.__childs = crosser.perform()
 
 
 import math
