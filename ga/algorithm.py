@@ -4,24 +4,31 @@ from reproduction_selection import ReproductionSelection
 from crossingover import Crossingover
 from mutation import Mutation
 from append_childs import AppendChilds
+from reduction import Reduction
 
 class Algorithm:
     def __init__(self, fitness_function, x_min, x_max, population_size,
-                mutation_probability):
+                mutation_probability, epochs):
         self.fitness_function = fitness_function
         self.x_min = x_min
         self.x_max = x_max
         self.population_size = population_size
         self.mutation_probability = mutation_probability
+        self.epochs = epochs
 
 
     def perform(self):
         self.__initialize_population()
-        self.__calculate_function_value()
-        self.__reproduction_selection()
-        self.__crossingover()
-        self.__mutation()
-        self.__append_childs()
+        self.__calculate_function_value(self.__population)
+
+        for epoch in range(0, self.epochs):
+            self.__reproduction_selection()
+            self.__crossingover()
+            self.__mutation()
+            self.__calculate_function_value(self.__childs)
+            self.__append_childs()
+            self.__reduction()
+            self.__debug(epoch)
 
 
     def __initialize_population(self):
@@ -30,8 +37,8 @@ class Algorithm:
         self.__population = initializator.perform()
 
 
-    def __calculate_function_value(self):
-        calculator = CalculateFunctionValue(self.__population,
+    def __calculate_function_value(self, individuals):
+        calculator = CalculateFunctionValue(individuals,
                                             self.fitness_function)
         calculator.perform()
 
@@ -56,8 +63,17 @@ class Algorithm:
         appender.perform()
 
 
-import math
-func = lambda x: math.sin(x) * 3 + 3 * x + 3
+    def __reduction(self):
+        reductor = Reduction(self.__population, self.population_size,
+                             self.x_min, self.x_max)
+        reductor.perform()
 
-a = Algorithm(func, 0, 10, 10000, 0.02)
+
+    def __debug(self, epoch):
+        print 'Epoch ', epoch, ':\t', self.__population[0]
+
+import math
+func = lambda x: math.sin(x*2)-x*x/100+x/3+100
+
+a = Algorithm(func, 0, 100, 20, 0.02, 50)
 a.perform()
