@@ -5,12 +5,13 @@ class CalculateFunctionValue:
     Оценивает значения фитнес функции для популяции
     """
 
-    def __init__(population, fitness_function):
+    def __init__(self, population, fitness_function):
         """
         Получает два параметра - популяцию особей
         и фитнес функцию в виде лямбды
         """
-        None
+        self.population = population
+        self.fitness_function = fitness_function
 
 
     def perform(self):
@@ -18,4 +19,5 @@ class CalculateFunctionValue:
         Рассчитывает значение для каждой особи популяции
         Ничего не возвращает (массив передан по ссылке)
         """
-        None
+        for i in self.population:
+            i.y = self.fitness_function(i.x)
