@@ -14,7 +14,7 @@ class Plot:
 
     def update_points(self, individuals):
         plt.clf()
-        plt.plot(self.__x_axis, self.__y_axis)
+        self.__init()
         x = map(lambda ind: ind.x, individuals)
         y = map(lambda ind: ind.y, individuals)
         plt.plot(x, y, 'ro')
