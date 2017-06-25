@@ -93,7 +93,7 @@ class Algorithm:
 
 
 import math
-func = lambda x: x**2 / np.sin(x)
+func = lambda x: np.sin(x) / 2*x
 
-a = Algorithm(func, 0, 10, 100, 0.02, 100)
+a = Algorithm(func, 0, 10, 27, 0.02, 100)
 a.perform()
