@@ -60,7 +60,7 @@ class ReproductionSelection:
 
 
     def __random_number(self):
-        return random.random() / 10
+        return random.random() / 1000
 
 
     def __pairwise(self, parents):

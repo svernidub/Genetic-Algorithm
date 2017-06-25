@@ -3,6 +3,7 @@ from calculate_function_value import CalculateFunctionValue
 from reproduction_selection import ReproductionSelection
 from crossingover import Crossingover
 from mutation import Mutation
+from append_childs import AppendChilds
 
 class Algorithm:
     def __init__(self, fitness_function, x_min, x_max, population_size,
@@ -20,6 +21,7 @@ class Algorithm:
         self.__reproduction_selection()
         self.__crossingover()
         self.__mutation()
+        self.__append_childs()
 
 
     def __initialize_population(self):
@@ -47,6 +49,11 @@ class Algorithm:
     def __mutation(self):
         mutator = Mutation(self.__childs, self.mutation_probability)
         mutator.perform()
+
+
+    def __append_childs(self):
+        appender = AppendChilds(self.__population, self.__childs)
+        appender.perform()
 
 
 import math
