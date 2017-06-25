@@ -22,7 +22,8 @@ class Crossingover:
         """
         childs = []
         for pair in self.parents:
-            childs.append(self.__cross(pair))
+            for c in self.__cross(pair):
+                childs.append(c)
         return childs
 
 
@@ -33,10 +34,15 @@ class Crossingover:
         genes1_start, genes1_end = self.__split(genes1)
         genes2_start, genes2_end = self.__split(genes2)
 
-        genes = genes1_start + genes2_end
+        return [self.__make_individual(genes1_start + genes2_end),
+                self.__make_individual(genes2_start + genes1_end)]
+
+
+    def __make_individual(self, genes):
         ind = Individual()
         ind.load_genes(genes)
         return ind
+
 
 
     def __split(self, genes):

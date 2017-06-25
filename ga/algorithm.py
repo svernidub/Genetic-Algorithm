@@ -73,7 +73,7 @@ class Algorithm:
         print 'Epoch ', epoch, ':\t', self.__population[0]
 
 import math
-func = lambda x: math.sin(x*2)-x*x/100+x/3+100
+func = lambda x: math.sin(x)-x*x/100+x/3
 
-a = Algorithm(func, 0, 100, 20, 0.02, 50)
+a = Algorithm(func, 0, 10, 50, 0.02, 10)
 a.perform()

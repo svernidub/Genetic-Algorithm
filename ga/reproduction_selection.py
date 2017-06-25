@@ -1,6 +1,8 @@
 #-*-coding: utf-8 -*-
+import math
 import random
 import itertools
+from functools import reduce
 
 class ReproductionSelection:
     """
@@ -22,7 +24,6 @@ class ReproductionSelection:
         Возвращает отобранные пары родителей для кроссинговера
         [[ind1, ind2], [ind3, ind4]]
         """
-        self.__sort()
         self.__calculate_probability()
         self.__select_parents()
         return self.__compile_pairs()
@@ -33,20 +34,29 @@ class ReproductionSelection:
 
 
     def __calculate_probability(self):
-        for i, ind in enumerate(self.population):
-            ind.probability = self.__probability(i)
+        self.__probabilities = []
+        common = 0
+        for ind in self.population:
+            common += ind.y
 
-    def __probability(self, index):
-        return (1.0 / self.__n) * \
-               (self.__a - (self.__a - self.__b) * index / (self.__n - 1.0))
+        prob = 0
+        for ind in self.population:
+            prob += ind.y / common
+            self.__probabilities.append([ind, prob])
 
 
     def __select_parents(self):
         self.__parents = []
+        pairs_n = int(math.ceil(len(self.population) * 1))
+        for n in range(0, pairs_n):
+            r = random.random()
 
-        for ind in self.population:
-            if ind.probability >= self.__random_number():
-                self.__parents.append(ind)
+            for prb in self.__probabilities:
+                if prb[1] >= r:
+                    self.__parents.append(prb[0])
+                    break
+
+
 
 
     def __compile_pairs(self):
@@ -57,10 +67,6 @@ class ReproductionSelection:
             pairs.append([self.__parents[0], self.__parents[-1]])
 
         return pairs
-
-
-    def __random_number(self):
-        return random.random() / 1000
 
 
     def __pairwise(self, parents):
