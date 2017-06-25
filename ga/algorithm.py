@@ -1,3 +1,4 @@
+import numpy as np
 from initialize_population import InitializePopulation
 from calculate_function_value import CalculateFunctionValue
 from reproduction_selection import ReproductionSelection
@@ -5,6 +6,7 @@ from crossingover import Crossingover
 from mutation import Mutation
 from append_childs import AppendChilds
 from reduction import Reduction
+from plot import Plot
 
 class Algorithm:
     def __init__(self, fitness_function, x_min, x_max, population_size,
@@ -18,6 +20,7 @@ class Algorithm:
 
 
     def perform(self):
+        self.__init_plot()
         self.__initialize_population()
         self.__calculate_function_value(self.__population)
 
@@ -28,7 +31,10 @@ class Algorithm:
             self.__calculate_function_value(self.__childs)
             self.__append_childs()
             self.__reduction()
+            self.__draw_to_plot()
             self.__debug(epoch)
+
+        self.__finalize_plot()
 
 
     def __initialize_population(self):
@@ -72,8 +78,22 @@ class Algorithm:
     def __debug(self, epoch):
         print 'Epoch ', epoch, ':\t', self.__population[0]
 
-import math
-func = lambda x: math.sin(x)-x*x/100+x/3
 
-a = Algorithm(func, 0, 10, 50, 0.02, 10)
+    def __init_plot(self):
+        self.__plot = Plot(self.fitness_function, self.x_min, self.x_max)
+
+
+    def __draw_to_plot(self):
+        self.__plot.update_points(self.__population)
+
+
+    def __finalize_plot(self):
+        self.__plot.finalize()
+
+
+
+import math
+func = lambda x: np.sin(x*2)-x*x/100+x/3
+
+a = Algorithm(func, 0, 10, 20, 0.02, 100)
 a.perform()
