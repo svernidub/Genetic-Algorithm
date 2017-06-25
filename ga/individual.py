@@ -1,5 +1,7 @@
 #-*-coding: utf-8 -*-
 
+import struct
+
 class Individual:
     """
     Класс особи популяции
@@ -15,7 +17,14 @@ class Individual:
         """
         Возвращает массив генов 1/0
         """
-        None
-        
+        return bin(struct.unpack('!i',struct.pack('!f',1.0))[0])[2:]
+
+
+    def load_genes(self, genes):
+        integer = int(genes, 2)
+        hex = struct.pack('!i', integer)
+        return struct.unpack('!f', hex)[0]
+
+
     def __str__(self):
         return "(" + str(self.x) + ", " +  str(self.y) + ")"
